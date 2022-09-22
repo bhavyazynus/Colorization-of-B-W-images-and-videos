@@ -4,6 +4,7 @@ from PIL import Image
 import numpy as np
 import tempfile
 
+
 def colorize_image(our_image):
     net = cv2.dnn.readNetFromCaffe('model/colorization_deploy_v2.prototxt', 'model/colorization_release_v2.caffemodel')
     pts = np.load('model/pts_in_hull.npy')
@@ -137,6 +138,7 @@ def main():
                 L = cv2.split(resized)[0]
                 L -= 50
 
+                
                 # pass the L channel through the network which will *predict* the
                 # 'a' and 'b' channel values
                 net.setInput(cv2.dnn.blobFromImage(L))
@@ -157,6 +159,7 @@ def main():
                 colorized = np.clip(colorized, 0, 1)
                 colorized = (255 * colorized).astype("uint8")        
                 stframe.image(colorized)
+                
         else :
             st.text("Please select Video!!")
 if __name__ == '__main__':
