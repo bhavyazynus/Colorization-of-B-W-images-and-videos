@@ -4,6 +4,7 @@ from PIL import Image
 import numpy as np
 import tempfile
 
+
 def colorize_image(our_image):
     net = cv2.dnn.readNetFromCaffe('model/colorization_deploy_v2.prototxt', 'model/colorization_release_v2.caffemodel')
     pts = np.load('model/pts_in_hull.npy')
@@ -28,6 +29,7 @@ def colorize_image(our_image):
     L = cv2.split(resized)[0]
     L -= 50
 
+    
     # pass the L channel through the network which will *predict* the 'a'
     # and 'b' channel values
     net.setInput(cv2.dnn.blobFromImage(L))
@@ -54,6 +56,7 @@ def colorize_image(our_image):
     colorized = (255 * colorized).astype("uint8")
 
     return colorized
+
 
 def main():
     """BW2COLOR"""
@@ -137,6 +140,7 @@ def main():
                 L = cv2.split(resized)[0]
                 L -= 50
 
+                
                 # pass the L channel through the network which will *predict* the
                 # 'a' and 'b' channel values
                 net.setInput(cv2.dnn.blobFromImage(L))
@@ -150,6 +154,7 @@ def main():
                 L = cv2.split(lab)[0]
                 colorized = np.concatenate((L[:, :, np.newaxis], ab), axis=2)
 
+                
                 # convert the output frame from the Lab color space to RGB, clip
                 # any values that fall outside the range [0, 1], and then convert
                 # to an 8-bit unsigned integer ([0, 255] range)
